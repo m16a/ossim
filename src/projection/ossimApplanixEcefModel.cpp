@@ -65,7 +65,7 @@ ossimApplanixEcefModel::ossimApplanixEcefModel(const ossimDrect& imageRect,
                                                double roll,
                                                double pitch,
                                                double heading,
-                                               const ossimDpt& /* principalPoint */, // in millimeters
+                                               const ossimDpt& principalPoint, // in millimeters
                                                double focalLength, // in millimeters
                                                const ossimDpt& pixelSize) // in millimeters
 {
@@ -81,6 +81,7 @@ ossimApplanixEcefModel::ossimApplanixEcefModel(const ossimDrect& imageRect,
    theEcefPlatformPosition     = platformPosition;
    theAdjEcefPlatformPosition  = platformPosition;
    theLensDistortion           = new ossimMeanRadialLensDistortion;
+   thePrincipalPoint = principalPoint;
    initAdjustableParameters();
    updateModel();
 
