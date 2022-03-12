@@ -1,0 +1,8 @@
+elevation_manager.elevation_source0.connection_string: /home/ivan/my_projects/uav_image_pixel_to_gps/ossim/data/elevation/srtm30plus_hgt
+elevation_manager.elevation_source0.type: srtm_directory
+elevation_manager.elevation_source0.enabled: true
+elevation_manager.elevation_source0.geoid.type: geoid1996
+
+elevation.enabled:  true
+elevation.auto_sort.enabled:  true
+geoid_egm_96_grid: /home/ivan/my_projects/uav_image_pixel_to_gps/ossim/data/geoids/geoid1996/egm96.grd

@@ -1,3 +1,9 @@
+# EXAMPLE COMMAND TO RUN CUSTOM PROJECT POINT APP AFTER BUILDING
+
+```
+../build/bin/custom-ossim-project-point -P ossim-prefs.txt params.txt
+```
+
 ### Jenkins Build Status 
 
 Resource | *master* | *dev* | 

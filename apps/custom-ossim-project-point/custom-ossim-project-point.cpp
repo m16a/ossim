@@ -8,6 +8,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -29,43 +31,29 @@ struct Params {
    double v;
 };
 
-Params parse_params() {
-   std::ifstream inps{"params.txt", std::ifstream::in};
+Params parse_params_from_string(const std::string& params_string) {
    Params result;
-   inps >> result.latitude;
-   inps >> result.longitude;
-   inps >> result.elevation;
-   inps >> result.roll;
-   inps >> result.pitch;
-   inps >> result.heading;
-   inps >> result.px;
-   inps >> result.py;
-   inps >> result.focal_length;
-   inps >> result.pix_size_x;
-   inps >> result.pix_size_y;
-   inps >> result.img_width;
-   inps >> result.img_height;
-   inps >> result.u;
-   inps >> result.v;
+   std::istringstream iss{params_string};
+   iss >> result.latitude;
+   iss >> result.longitude;
+   iss >> result.elevation;
+   iss >> result.roll;
+   iss >> result.pitch;
+   iss >> result.heading;
+   iss >> result.px;
+   iss >> result.py;
+   iss >> result.focal_length;
+   iss >> result.pix_size_x;
+   iss >> result.pix_size_y;
+   iss >> result.img_width;
+   iss >> result.img_height;
+   iss >> result.u;
+   iss >> result.v;
    return result;
 }
 
-int main(int argc, char *argv[])
-{
-   //---
-   // Get the arg count so we can tell if an arg was consumed by
-   // ossimInit::instance()->initialize
-   //---
-   int originalArgCount = argc;
-
-   ossimArgumentParser ap(&argc, argv);
-
-   // Initialize ossim stuff, factories, plugin, etc.
-   ossimInit::instance()->initialize(ap);
-
-   try
-   {
-      Params params = parse_params();
+ossimGpt run_from_params(const Params& params, bool debug=false) {
+   if (debug) {
       std::cout << "Parsed input params: " << std::endl;
       std::cout << "  latitude (deg): " << params.latitude << std::endl;
       std::cout << "  longitude (deg): " << params.longitude << std::endl;
@@ -82,21 +70,48 @@ int main(int argc, char *argv[])
       std::cout << "  image height (pix): " << params.img_height << std::endl;
       std::cout << "  Selected pixel x (pix): " << params.u << std::endl;
       std::cout << "  Selected pixel y (pix): " << params.v << std::endl;
-      ossimApplanixEcefModel model{
-         ossimDrect{0, 0, params.img_width, params.img_height},
-	 ossimGpt{params.latitude, params.longitude, params.elevation},
-	 params.roll,
-	 params.pitch,
-	 params.heading,
-	 ossimDpt{params.px, params.py},
-	 params.focal_length,
-	 ossimDpt{params.pix_size_x, params.pix_size_y}
-      };
-      model.setPrincipalPoint(ossimDpt{params.px, params.py});
-      ossimGpt res;
-      model.lineSampleToWorld(ossimDpt{params.u, params.v}, res);
-      std::cout << "Res lat, long, height: " << res.latd() << ", " << res.lond() << ", " <<
-         res.height() << std::endl;
+   }
+   ossimApplanixEcefModel model{
+      ossimDrect{0, 0, params.img_width, params.img_height},
+      ossimGpt{params.latitude, params.longitude, params.elevation},
+      params.roll,
+      params.pitch,
+      params.heading,
+      ossimDpt{params.px, params.py},
+      params.focal_length,
+      ossimDpt{params.pix_size_x, params.pix_size_y}
+   };
+   model.setPrincipalPoint(ossimDpt{params.px, params.py});
+   ossimGpt res;
+   model.lineSampleToWorld(ossimDpt{params.u, params.v}, res);
+   return res;
+}
+
+void run_from_tasks_file(const std::string& tasks_file_path) {
+   std::string line;
+   std::ifstream inps{tasks_file_path, std::ifstream::in};
+   while (std::getline(inps, line)) {
+      if (line.rfind("//", 0) == 0) {
+         continue;
+      }
+      const Params& params = parse_params_from_string(line);
+      const ossimGpt& result_coord = run_from_params(params);
+      std::cout << "Result coordinate: " << result_coord << std::endl;
+   }
+}
+
+int main(int argc, char *argv[])
+{
+   int originalArgCount = argc;
+
+   ossimArgumentParser ap(&argc, argv);
+
+   // Initialize ossim stuff, factories, plugin, etc.
+   ossimInit::instance()->initialize(ap);
+
+   try
+   {
+      run_from_tasks_file(argv[argc - 1]);
    }
    catch (const ossimException& e)
    {

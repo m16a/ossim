@@ -1,0 +1,16 @@
+// Task line format: lat(deg) long(deg) height(m) roll(deg) pitch(deg) yaw(deg) cx(mm) cy(mm) focal(mm) pix_size_x(mm) pix_size_y(mm) img_width(pix) img_height(pix) pix_u(pix) pix_v(pix)
+// No rotation (camera looks perpendicularly into the ground), selected principal point as
+// pixel of interest - should return the height at the camera's coordinate
+48.51380 23.82184 2000.2 0 0 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 2004.0555555555557 2044.6666666666667
+// Same pixel, camera is pitch-rotated "positively" - should return height at some point with
+// BIGGER latitude, and almost the same longitude
+48.51380 23.82184 2000.2 0 60 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 2004.0555555555557 2044.6666666666667
+// ... "negatively" - ... SMALLER latitude, ...
+48.51380 23.82184 2000.2 0 -60 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 2004.0555555555557 2044.6666666666667
+// Same pixel, camera is roll-rotated "positively" - ... almost the same latitude, SMALLER longitude
+48.51380 23.82184 2000.2 60 0 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 2004.0555555555557 2044.6666666666667
+// ... "negatively" - ..., BIGGER longitude
+48.51380 23.82184 2000.2 -60 0 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 2004.0555555555557 2044.6666666666667
+// Next tasks use different pixel of interests instead of principal point, no rotation
+48.51380 23.82184 2000.2 0 0 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 4 4
+48.51380 23.82184 2000.2 0 0 0 -0.31 0.012 15.03 0.009 0.009 4077 4092 4070 4090
