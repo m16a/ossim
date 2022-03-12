@@ -25,8 +25,8 @@ struct Params {
    double pix_size_y;
    int img_width;
    int img_height;
-   int u;
-   int v;
+   double u;
+   double v;
 };
 
 Params parse_params() {
@@ -66,6 +66,22 @@ int main(int argc, char *argv[])
    try
    {
       Params params = parse_params();
+      std::cout << "Parsed input params: " << std::endl;
+      std::cout << "  latitude (deg): " << params.latitude << std::endl;
+      std::cout << "  longitude (deg): " << params.longitude << std::endl;
+      std::cout << "  height above ground (meters): " << params.elevation << std::endl;
+      std::cout << "  roll (deg): " << params.roll << std::endl;
+      std::cout << "  pitch (deg): " << params.pitch << std::endl;
+      std::cout << "  yaw (deg): " << params.heading << std::endl;
+      std::cout << "  principal point offset from center x (mm): " << params.px << std::endl;
+      std::cout << "  principal point offset from center y (mm): " << params.py << std::endl;
+      std::cout << "  focal length (mm): " << params.focal_length << std::endl;
+      std::cout << "  pixel size x (mm): " << params.pix_size_x << std::endl;
+      std::cout << "  pixel size y (mm): " << params.pix_size_y << std::endl;
+      std::cout << "  image width (pix): " << params.img_width << std::endl;
+      std::cout << "  image height (pix): " << params.img_height << std::endl;
+      std::cout << "  Selected pixel x (pix): " << params.u << std::endl;
+      std::cout << "  Selected pixel y (pix): " << params.v << std::endl;
       ossimApplanixEcefModel model{
          ossimDrect{0, 0, params.img_width, params.img_height},
 	 ossimGpt{params.latitude, params.longitude, params.elevation},
