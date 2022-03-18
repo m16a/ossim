@@ -52,7 +52,7 @@ Params parse_params_from_string(const std::string& params_string) {
    return result;
 }
 
-ossimGpt run_from_params(const Params& params, bool debug=true) {
+ossimGpt run_from_params(const Params& params, bool debug=false) {
    if (debug) {
       std::cout << "Parsed input params: " << std::endl;
       std::cout << "  latitude (deg): " << params.latitude << std::endl;

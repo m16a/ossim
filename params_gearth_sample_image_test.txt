@@ -1,2 +1,0 @@
-// Task line format: lat(deg) long(deg) height(m) roll(deg) pitch(deg) yaw(deg) cx(mm) cy(mm) focal(mm) pix_size_x(mm) pix_size_y(mm) img_width(pix) img_height(pix) pix_u(pix) pix_v(pix)
-51 31 600 0 69 69 0.0 0.0 10 0.01777176492918045 0.01777176492918045 1400 788 
