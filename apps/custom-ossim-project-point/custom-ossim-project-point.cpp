@@ -87,14 +87,22 @@ ossimGpt run_from_params(const Params& params, bool debug=false) {
    return res;
 }
 
-void run_from_tasks_file(const std::string& tasks_file_path) {
-   std::string line;
-   std::ifstream inps{tasks_file_path, std::ifstream::in};
-   while (std::getline(inps, line)) {
-      if (line.rfind("//", 0) == 0) {
-         continue;
+void run_from_tasks_file_or_str_input(const std::string& tasks_fpath_or_str_inp) {
+   std::ifstream inps{tasks_fpath_or_str_inp, std::ifstream::in};
+   if (inps.good()) {
+      // read from tasks file
+      std::string line;
+      while (std::getline(inps, line)) {
+         if (line.rfind("//", 0) == 0) {
+            continue;
+         }
+         const Params& params = parse_params_from_string(line);
+         const ossimGpt& result_coord = run_from_params(params);
+         std::cout << "Result coordinate: " << result_coord << std::endl;
       }
-      const Params& params = parse_params_from_string(line);
+   } else {
+      // read from str input
+      const Params& params = parse_params_from_string(tasks_fpath_or_str_inp);
       const ossimGpt& result_coord = run_from_params(params);
       std::cout << "Result coordinate: " << result_coord << std::endl;
    }
@@ -111,7 +119,7 @@ int main(int argc, char *argv[])
 
    try
    {
-      run_from_tasks_file(argv[argc - 1]);
+      run_from_tasks_file_or_str_input(argv[argc - 1]);
    }
    catch (const ossimException& e)
    {
