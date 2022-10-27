@@ -191,6 +191,8 @@ namespace ossim
       }
    }
 
+   ossim_int64 wrapInt(ossim_int64 kX, ossim_int64 kLowerBound, ossim_int64 kUpperBound);
+
    // XXX to Garrett from PJM:
    //     min and max routines. std::min/max do not in fact correctly handle nan.  
    //     this is troublesome, i think my code always was asserting no nans before values got

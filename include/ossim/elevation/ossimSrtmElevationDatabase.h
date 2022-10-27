@@ -39,8 +39,11 @@ public:
    virtual double getHeightAboveEllipsoid(const ossimGpt& gpt);
    virtual ossim_uint64 createId(const ossimGpt& pt)const
    {
-      ossim_uint64 y = static_cast<ossim_uint64>(ossim::wrap(pt.latd(), -90.0, 90.0)+90.0);
-      ossim_uint64 x = static_cast<ossim_uint64>(ossim::wrap(pt.lond(),-180.0,180.0)+180.0);
+      ossim_int64 y = static_cast<ossim_int64>(pt.latd());
+      ossim_int64 x = static_cast<ossim_int64>(pt.lond());
+      y = ossim::wrapInt(y, -90, 90) + 90;
+      x = ossim::wrapInt(x, -180, 180) + 180;
+
       // map the extreme edge to the same ID ax the 179 west cell and the same for the 89
       // degree north cell.
       //

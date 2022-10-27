@@ -1343,3 +1343,13 @@ bool ossim::getBinInformation( const ossimImageSource* imageSource,
    }
    return result;
 }
+
+ossim_int64 ossim::wrapInt(ossim_int64 kX, ossim_int64 kLowerBound, ossim_int64 kUpperBound)
+{
+   int range_size = kUpperBound - kLowerBound + 1;
+
+   if (kX < kLowerBound)
+	   kX += range_size * ((kLowerBound - kX) / range_size + 1);
+
+   return kLowerBound + (kX - kLowerBound) % range_size;
+};
