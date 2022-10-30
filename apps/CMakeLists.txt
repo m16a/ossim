@@ -1,6 +1,6 @@
 FILE(GLOB OSSIM_APP_DIRS "ossim-*")
 LIST(APPEND OSSIM_APP_DIRS "custom-ossim-project-point")
-LIST(APPEND OSSIM_APP_DIRS "custom-ossim-project-point-c-sharp-wrapper")
+LIST(APPEND OSSIM_APP_DIRS "custom-ossim-project-point-dll")
 FILE(GLOB OSSIM_CONFIG_DIR "ossim-config*")
 LIST(REMOVE_ITEM OSSIM_APP_DIRS ${OSSIM_CONFIG_DIR})
 

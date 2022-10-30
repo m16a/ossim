@@ -1,4 +1,4 @@
-#include "custom-ossim-project-point-c-sharp-wrapper.h"
+#include "custom-ossim-project-point-dll.h"
 
 #include <ossim/base/ossimArgumentParser.h>
 #include <ossim/base/ossimException.h>
@@ -13,15 +13,18 @@
 #include <sstream>
 #include <string>
 
-const char* RaycastSRTM(
+int projectPoint(
 	const char* settings_file_name,
 	double latitude, double longitude, double elevation,
 	double roll, double pitch, double heading,
 	double px, double py, double focal_length,
 	double pix_size_x, double pix_size_y,
-	int img_width, int img_height, double u, double v)
+	int img_width, int img_height, double u, double v,
+	double& out_lattitude, double& out_longitude, double& out_altitude)
 {
-
+	out_lattitude = 0.0;
+	out_longitude = 0.0;
+	out_altitude = 0.0;
 	try {
 		std::string cmdLine = "nonused_app_name -P " + std::string(settings_file_name);
 		ossimArgumentParser ap(cmdLine);
@@ -41,11 +44,13 @@ const char* RaycastSRTM(
 		model.setPrincipalPoint(ossimDpt{ px, py });
 		ossimGpt res;
 		model.lineSampleToWorld(ossimDpt{ u, v }, res);
-
-		return res.toString().c_str();
+		
+		out_lattitude = res.latd();
+		out_longitude = res.lond();
+		out_altitude = res.height();
 	}
 	catch (const ossimException& e) {
-		return "";
+		return 1;
 	}
-	return "";
+	return 0;
 }
